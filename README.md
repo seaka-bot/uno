@@ -13,9 +13,8 @@
 
 ## Funcionando
 
-<img src="https://mnsa.com.br/assets/img/uno-discord-2023.webp" alt="Lobby do Uno no Discord, com os botões Iniciar Jogo, Abrir Party, Fechar Party, Entrar na Party e Host" width="480">
+<img src="https://mnsa.com.br/assets/img/github/uno-demo.gif" alt="Demonstração do Uno no Discord: lobby, painel de host, mão de cartas em botões e escolha de cor" width="100%">
 
-*Lobby de uma partida, 19/09/2023.*
 
 ## Arquivos
 
