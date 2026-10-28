@@ -1,0 +1,43 @@
+$nomention
+
+
+$onlyIf[$guildID!=; ]
+$var[Prefixo;$cropText[$message;$charCount[$getServerVar[Prefixo]];]]
+$onlyIf[$var[Prefixo]==$getServerVar[Prefixo]; ]
+$var[cmd;$replaceText[$toLowercase[$message[1]];$var[Prefixo];;1]]
+$textSplit[Uno uno; ] $var[i;1] $var[code;$repeatMessage[$getTextSplitLength;$|if[$|var[cmd\]==$|splitText[$|var[i\]\]\] $|var[triggerCMD\;true\] $|stop $|endif $|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\]]] $eval[$replaceText[$var[code];|;;-1]] $if[$var[triggerCMD]==] $stop $endif
+$var[message;$replaceText[$message;$var[Prefixo]$var[cmd];;1]]
+$textSplit[$var[message]; ]$var[i;1] $var[code;$repeatMessage[10;$|var[message$|var[i\]\;$|splitText[$|var[i\]\]\] ]] $eval[$replaceText[$var[code];|;;-1]]
+
+$onlyIf[$checkUserPerms[$botID;embedlinks]==true; `$username, me conceda permissões para links, para um correto funcionamento.`]
+
+
+$if[$getChannelVar[UnoEmojis]==]$setChannelVar[UnoEmojis;1-1]$endif 
+$textSplit[$getChannelVar[UnoEmojis];-]
+$if[$splitText[1]>=$getTimestamp[s]]
+$description[Aguarde o [jogo\](https://discord.com/channels/$guildID/$channelID/$splitText[2]) terminar. 
+Mas você poderá iniciar um novo jogo <t:$splitText[1]:R>]
+$stop
+$endif
+$var[i;1]
+$var[code;$repeatMessage[10;$|if[$|var[i\]!=1\]-$|endif$|optOff[$|randomText[r1%|{-SEMICOL-}%r2%|{-SEMICOL-}%r3%|{-SEMICOL-}%r4%|{-SEMICOL-}%r5%|{-SEMICOL-}%r6%|{-SEMICOL-}%r7%|{-SEMICOL-}%r8%|{-SEMICOL-}%r9%|{-SEMICOL-}%b1%|{-SEMICOL-}%b2%|{-SEMICOL-}%b3%|{-SEMICOL-}%b4%|{-SEMICOL-}%b5%|{-SEMICOL-}%b6%|{-SEMICOL-}%b7%|{-SEMICOL-}%b8%|{-SEMICOL-}%b9%|{-SEMICOL-}%g1%|{-SEMICOL-}%g2%|{-SEMICOL-}%g3%|{-SEMICOL-}%g4%|{-SEMICOL-}%g5%|{-SEMICOL-}%g6%|{-SEMICOL-}%g7%|{-SEMICOL-}%g8%|{-SEMICOL-}%g9%|{-SEMICOL-}%rb%|{-SEMICOL-}%yb%|{-SEMICOL-}%gb%|{-SEMICOL-}%bb%|{-SEMICOL-}%rx%|{-SEMICOL-}%yx%|{-SEMICOL-}%gx%|{-SEMICOL-}%bx%|{-SEMICOL-}%0c%|{-SEMICOL-}%0b $|var[i%|{-SEMICOL-}%2\]\]\]]/]
+
+$setChannelVar[UnoParty;$authorID]
+$setChannelVar[UnoCartas;$eval[$replaceText[$var[code];|;;-1]]]
+$textSplit[$getChannelVar[UnoParty];-]
+$var[i;1]
+$var[code;$repeatMessage[$getTextSplitLength;
+$|var[emoji\] - $|nickname[$|splitText[$|var[i\]\]\] $|var[emoji%|{-SEMICOL-}%<:aBotCirculo:1127353939797475408>\] $|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\]
+]]
+$textSplit[$getChannelVar[UnoParty];-]
+$var[emoji;<:emoji_15:1062380398950240266>]
+$var[UnoID;$sendEmbedMessage[$channelID;;;;# Lobby [$getTextSplitLength/8\]
+Aguardando$if[$splitText[2]==] jogadores.. $else o Host começar.. $endif
+$eval[$replaceText[$var[code];|;;-1]]
+;;;;;;;;;yes]]
+$setChannelVar[UnoEmojis;$sum[$getTimestamp[s];300]-$var[UnoID]] 
+$addButton[no;unoStart-iniciar-$authorID-1;Iniciar Jogo;secondary;no;<:aUnoIniciar:1128484025653280800>;$var[UnoID]] 
+$addButton[no;uno-abrir-$authorID;Abrir Party;success;no;<:aUnoAbrir:1128891310770749521>;$var[UnoID]]
+$addButton[yes;uno-fechar-$authorID;Fechar Party;danger;yes;<:aUnoFechar:1128891374238973982>;$var[UnoID]]
+$addButton[no;uno-entrar;Entrar na Party [1/8\];secondary;yes;<:aUnoSair:1128483941549084714>;$var[UnoID]]
+$addButton[no;uno-host--$splitText[1]-1;Host;secondary;no;<:aUnoHost:1128483990815391806>;$var[UnoID]]

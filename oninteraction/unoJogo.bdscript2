@@ -1,0 +1,277 @@
+$nomention
+
+
+
+$textSplit[$customID;-]
+$onlyIf[$splitText[1]==unoStart; ]
+$var[função;$splitText[2]]
+$var[pos;$splitText[4]]
+$var[posb;$var[pos]]
+$textSplit[$getChannelVar[UnoEmojis];-]
+
+$if[$splitText[2]!=$messageID]$ephemeral $removeButtons Sinto muito, mas não reconheci o ID dessa party. $stop $endif
+
+
+$textSplit[$getChannelVar[UnoParty];-]
+$if[$and[$splitText[$var[pos]]!=$authorID;$var[função]!=host]==true]$ephemeral $removeButtons Aguarde $nickname[$splitText[$var[pos]]]. $stop $endif
+
+$var[emoji;<:emoji_15:1062380398950240266>]
+$var[id;$splitText[3]]
+$var[jgd;$splitText[4]]
+$if[$getTextSplitIndex[$authorID]==-1]$textSplit[$getChannelVar[UnoParty];-]$ephemeral $removeButtons Aguarde **@$username[$splitText[$var[pos]]]]**. $stop $endif
+
+$var[i;1]$var[code;$repeatMessage[10;$|textSplit[$|serverEmojis[$|getVar[UnoEmojis%|{-SEMICOL-}%$|botID\]%|{-SEMICOL-}%-\]%|{-SEMICOL-}%-\]$|textSplit[$|splitText[$|var[i\]\]%|{-SEMICOL-}%:\]$|var[nome%|{-SEMICOL-}%$|splitText[2\]\]$|textSplit[$|serverEmojis[$|getVar[UnoEmojis%|{-SEMICOL-}%$|botID\]%|{-SEMICOL-}%-\]%|{-SEMICOL-}%-\]$|var[$|var[nome\]%|{-SEMICOL-}%$|splitText[$|var[i\]\]\]$|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\]]]$var[code;$repeatMessage[5;$var[code]]]$eval[$replaceText[$var[code];|;;-1]]
+
+$textSplit[$customID;-]
+$if[$splitText[2]==iniciar]
+$removeAllComponents
+$textSplit[$getChannelVar[UnoParty];-]
+$setChannelVar[UnoCarta;$randomText[r1;r2;r3;r4;r5;r6;r7;r8;r9;b1;b2;b3;b4;b5;b6;b7;b8;b9;g1;g2;g3;g4;g5;g6;g7;g8;g9]]
+$var[desc;jogo]
+$var[bttn;jogo]
+
+$endif
+
+$if[$splitText[2]==host]
+$if[$splitText[3]!=$authorID]$ephemeral $removeButtons Somente o Host pode alterar isso. $stop $endif
+$removeButtons 
+$var[pos;$splitText[4]] 
+$var[posB;$splitText[4]]
+$var[a;$splitText[5]]
+$if[$splitText[6]==voltar]
+$var[desc;jogo]
+$var[bttn;jogo]
+$var[voltar;true]
+$endif
+$if[$splitText[6]==opc]
+$if[$splitText[7]==⬆️]$var[c;+1]$else $var[c;-1]$endif
+$var[a;$calculate[$var[a]$var[c]]]
+$textSplit[$getChannelVar[UnoParty];-]
+$if[$var[a]<=0]$var[a;$getTextSplitLength] $endif
+$if[$var[a]>$getTextSplitLength]$var[a;1] $endif
+$endif
+$if[$splitText[6]==pular]
+$textSplit[$getChannelVar[UnoParty];-]
+$var[pos;$sum[$var[pos];1]]
+$if[$var[pos]>$getTextSplitLength]$var[pos;1] $endif 
+$endif
+$if[$splitText[6]==remover]
+$textSplit[$getChannelVar[UnoParty];-]
+$if[$var[a]==1]$ephemeral $removeButtons Você não pode remover o host da partida.$stop $endif
+
+$textSplit[$getChannelVar[UnoParty];-]
+
+$removeSplitTextElement[$var[a]]
+$setChannelVar[UnoParty;$joinSplitText[-]]
+$if[$var[pos]>$getTextSplitLength]$var[pos;$sub[$var[pos];1]] $endif 
+$if[$var[a]>$getTextSplitLength]$var[a;$sub[$var[a];1]] $endif 
+
+$endif 
+$if[$splitText[6]==fechar]
+$setChannelVar[UnoEmojis;1-1]
+$description[# SALA FECHADA
+o host **$username[$authorID] - (`$authorID`)** encerrou a sala. ]
+$removeButtons 
+$addButton[no;.;$username Fechou esse jogo.;danger;yes]
+$stop
+$endif
+$if[$splitText[6]==MSG]
+$var[UnoID;$sendEmbedMessage[$channelID;;;;# Configurações de sala ⚙️
+(Clique na seta para atualizar a mensagem.);;;;;;;;;yes]]
+$removeButtons 
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-voltar;⚙️;secondary;no;;$var[UnoID]]
+$textSplit[$getChannelVar[UnoEmojis];-]
+$editSplitText[2;$var[UnoID]]
+$setChannelVar[UnoEmojis;$joinSplitText[-]]
+$removeAllComponents 
+$deleteMessage[$channelID;$messageID]
+$stop
+$endif
+
+
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-voltar;Voltar;secondary]
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-pular;Pular vez;secondary]
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-fechar;Fechar;danger]
+$addButton[yes;unoStart-host-$authorID-$var[pos]-$var[a]-opc-⬆️; ;secondary;no;⬆️]
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-remover;remover jogador;danger]
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-opc-⬇️; ;secondary;no;⬇️]
+$addButton[no;unoStart-host-$authorID-$var[pos]-$var[a]-MSG;Reenviar mensagem;secondary]
+
+
+
+$textSplit[$getChannelVar[UnoParty];-] $var[i;1] $var[code;$repeatMessage[$getTextSplitLength;$|if[$|var[i\]==$|var[a\]\]-  [$|nickname[$|splitText[$|var[i\]\]\]\](https://a.com)$|elseif[1==1\]- $n|ickname[$|splitText[$|var[i\]\]\] $|endif
+$|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\]]]
+
+$description[# Configurações de sala ⚙️
+
+$eval[$replaceText[$var[code];|;;-1]]
+
+**Vez de $username[$splitText[$var[pos]]]**]
+$endif 
+ 
+
+$if[$splitText[2]==intc]
+$setChannelVar[UnoCarta;$splitText[5]0]
+$var[desc;jogo]
+$var[bttn;jogo]
+$endif
+
+$if[$splitText[2]==comprar]
+$if[$getChannelVar[UnoCompra]==0]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$var[edit;$joinSplitText[-]]
+$var[code;$repeatMessage[1;-$|optOff[$|randomText[r1%|{-SEMICOL-}%r2%|{-SEMICOL-}%r3%|{-SEMICOL-}%r4%|{-SEMICOL-}%r5%|{-SEMICOL-}%r6%|{-SEMICOL-}%r7%|{-SEMICOL-}%r8%|{-SEMICOL-}%r9%|{-SEMICOL-}%b1%|{-SEMICOL-}%b2%|{-SEMICOL-}%b3%|{-SEMICOL-}%b4%|{-SEMICOL-}%b5%|{-SEMICOL-}%b6%|{-SEMICOL-}%b7%|{-SEMICOL-}%b8%|{-SEMICOL-}%b9%|{-SEMICOL-}%g1%|{-SEMICOL-}%g2%|{-SEMICOL-}%g3%|{-SEMICOL-}%g4%|{-SEMICOL-}%g5%|{-SEMICOL-}%g6%|{-SEMICOL-}%g7%|{-SEMICOL-}%g8%|{-SEMICOL-}%g9%|{-SEMICOL-}%rb%|{-SEMICOL-}%yb%|{-SEMICOL-}%gb%|{-SEMICOL-}%bb%|{-SEMICOL-}%rx%|{-SEMICOL-}%yx%|{-SEMICOL-}%gx%|{-SEMICOL-}%bx%|{-SEMICOL-}%0c%|{-SEMICOL-}%0b $|var[i%|{-SEMICOL-}%2\]\]\]]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$editSplitText[$var[pos];$var[edit]$eval[$replaceText[$var[code];|;;-1]]]
+$setChannelVar[UnoCartas;$joinSplitText[/]]
+$else 
+$var[addCarta;$getChannelVar[UnoCompra]]
+$var[force;true]
+$endif
+$var[bttn;jogo]
+$var[add;$nickname[$authorID] comprou as cartas.]
+$var[desc;jogo]
+
+$endif
+
+$if[$splitText[2]==jogar]
+
+$if[$getChannelVar[UnoCartaJogar]==]
+
+$ephemeral
+$description[Escolha sua carta, e em seguida clique em Jogar novamente.]
+
+$removeAllComponents
+$var[lim;no]$var[i;1]$var[limn;5]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$var[qtd;$getTextSplitLength]
+$try
+$var[code;$repeatMessage[5;$|addButton[$|var[lim\]\;UnoCarta-carta-$|var[i\]-$|var[pos\]\; \;secondary\;no\;$|var[$|splitText[$|var[i\]\]\]\]
+$|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\] $|var[lim\;no\] $|if[$|var[i\]>$|var[limn\]\]$|var[lim\;yes\] $|var[limn\;$|sum[$|var[limn\]\;5\]\]$|endif
+]]$var[code;$cropText[$repeatMessage[5;$var[code]];$multi[$var[qtd];$charCount[$var[code]]];]]
+$eval[$replaceText[$var[code];|;;-1]]
+$catch
+
+
+$endtry
+$else
+$setChannelVar[UnoCarta;$getChannelVar[UnoCartaJogar]] 
+$setChannelVar[UnoCartaJogar;]
+$var[boolCarta;true]
+$var[desc;jogo]
+$var[bttn;jogo]
+$removeButtons
+$endif
+$endif
+$var[posb;$var[pos]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$if[$splitText[1]==]
+$removeAllComponents
+$var[bttn;]
+$var[desc;fim]
+$endif
+$if[$var[voltar]==]
+$textSplit[$getChannelVar[UnoParty];-]
+$var[posb;$var[pos]]
+$if[$var[pos]>=$getTextSplitLength] $var[pos;1] $else $var[pos;$sum[$var[pos];1]]$endif
+$endif 
+
+$textSplit[$getChannelVar[UnoCarta];]
+$if[$and[$splitText[1]==0;$var[boolCarta]==true]==true]
+$if[$splitText[2]==b]
+$var[addCarta;4]
+$var[cor;.]
+$var[desc;jogo]
+$removeButtons
+$endif
+$if[$splitText[2]==c]
+$var[cor;.]
+$var[desc;jogo]
+$endif
+$var[add;$username irá escolher a cor.] 
+$endif
+$textSplit[$getChannelVar[UnoCarta];]
+
+$if[$and[$splitText[1]!=0;$or[$splitText[2]==b;$splitText[2]==x]==true;$var[boolCarta]==true]==true]
+$if[$splitText[2]==b]
+$var[addCarta;2]
+
+$textSplit[$getChannelVar[UnoParty];-]
+$var[add;$nickname[$splitText[$var[pos]]] comprou as cartas.]
+$elseif[$splitText[2]==x]
+$textSplit[$getChannelVar[UnoParty];-]
+$var[add;$nickname[$authorID] pulou $nickname[$splitText[$var[pos]]]]
+$var[posb;$var[pos]]
+$if[$var[pos]>=$getTextSplitLength] $var[pos;1] $else $var[pos;$sum[$var[pos];1]]$endif
+$endif
+$var[desc;jogo]
+
+$endif
+
+$if[$var[cor]!=]
+$removeAllComponents
+$var[bttn;]
+$addButton[no;unoStart-intc-$authorID-$var[posb]-r;ㅤ;danger;no]
+$addButton[no;unoStart-intc-$authorID-$var[posb]-g;ㅤ;success;no]
+$addButton[no;unoStart-intc-$authorID-$var[posb]-b;ㅤ;primary;no]
+$addButton[no;unoStart-intc-$authorID-$var[posb]-y;ㅤ;secondary;no;🟨]
+$endif
+$if[$var[bttn]==jogo]
+$removeAllComponents
+$textSplit[$getChannelVar[UnoParty];-]
+$addButton[no;unoStart-comprar-$splitText[$var[pos]]-$var[pos];Comprar;secondary]
+$addButton[no;unoStart-jogar-$splitText[$var[pos]]-$var[pos];Jogar;secondary]
+$addButton[no;unoStart-host-$splitText[1]-$var[pos]-1;Host;secondary]
+$endif
+
+$if[$var[addCarta]!=]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$if[$and[$checkContains[$joinSplitText[ ];rb;gb;yb;bb;0b]==true;$var[force]!=true]==true]
+$setChannelVar[UnoCompra;$sum[$getChannelVar[UnoCompra];$var[addCarta]]]
+$var[add;_número de cartas a serem compradas : $getChannelVar[UnoCompra]_]
+$else
+$var[edit;$joinSplitText[-]]
+$var[code;$repeatMessage[10;-$|optOff[$|randomText[r1\;r2\;r3\;r4\;r5\;r6\;r7\;r8\;r9\;b1\;b2\;b3\;b4\;b5\;b6\;b7\;b8\;b9\;g1\;g2\;g3\;g4\;g5\;g6\;g7\;g8\;g9\;rb\;yb\;gb\;bb\;rx\;yx\;gx\;bx\;0c\;0b\]\]]]
+$var[code;$cropText[$repeatMessage[10;$var[code]];$multi[$divide[$charCount[$var[code]];10];$if[$getChannelVar[UnoCompra]==0]$var[addCarta]$elseif[1==1]$getChannelVar[UnoCompra]$endif];] ]
+$textSplit[$getChannelVar[UnoCartas];/]
+$editSplitText[$var[posb];$var[edit]$eval[$replaceText[$var[code];|;;-1]]]
+$setChannelVar[UnoCartas;$joinSplitText[/]]
+$setChannelVar[UnoCompra;0] 
+$endif
+$endif
+
+$if[$var[desc]==jogo]
+$textSplit[$getChannelVar[UnoParty];-]
+<@$splitText[$var[pos]]>  
+$description[Carta atual
+# $var[$getChannelVar[UnoCarta]] $getChannelVar[UnoCarta]
+$var[add]
+Vez de$textSplit[$getChannelVar[UnoParty];-] **$nickname[$splitText[$var[pos]]]**
+]
+$endif
+$textSplit[$getChannelVar[UnoCartas];/]
+$if[$var[desc]==fim]
+
+$removeAllComponents
+
+$var[code;$repeatMessage[8;
+$textSplit[$splitText[$var[i]];-]
+]]
+$description[
+ $nickname[$authorID] 
+# Ganhou! 
+
+
+A partida foi finalizada.
+]
+$addButton[no;.;$nickname[$authorID];secondary;no;🏆]
+$setChannelVar[UnoEmojis;1-1]
+$stop
+$endif
+
+
+

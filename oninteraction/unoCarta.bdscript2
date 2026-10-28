@@ -1,0 +1,72 @@
+$nomention
+$textSplit[$customID;-]
+$onlyIf[$splitText[1]==UnoCarta; ]
+$var[emoji;<:emoji_15:1062380398950240266>]
+$var[pos;$splitText[4]]
+$var[id;$splitText[3]]
+
+$var[i;1]$var[code;$repeatMessage[10;$|textSplit[$|serverEmojis[$|getVar[UnoEmojis%|{-SEMICOL-}%$|botID\]%|{-SEMICOL-}%-\]%|{-SEMICOL-}%-\]$|textSplit[$|splitText[$|var[i\]\]%|{-SEMICOL-}%:\]$|var[nome%|{-SEMICOL-}%$|splitText[2\]\]$|textSplit[$|serverEmojis[$|getVar[UnoEmojis%|{-SEMICOL-}%$|botID\]%|{-SEMICOL-}%-\]%|{-SEMICOL-}%-\]$|var[$|var[nome\]%|{-SEMICOL-}%$|splitText[$|var[i\]\]\]$|var[i%|{-SEMICOL-}%$|calculate[$|var[i\]+1\]\]]]$var[code;$repeatMessage[5;$var[code]]]$eval[$replaceText[$var[code];|;;-1]]
+
+$textSplit[$customID;-]
+
+$if[$splitText[2]==carta]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$textSplit[$splitText[$var[id]];]
+$var[1;$splitText[1]] $var[2;$splitText[2]]
+$if[$splitText[1]!=] 
+ 
+$textSplit[$getChannelVar[UnoCarta];]
+$if[$getChannelVar[UnoCompra]==0]
+
+$if[$or[$splitText[1]==$var[1];$splitText[2]==$var[2];$var[1]==0;$splitText[1]==0]==true]
+$setChannelVar[UnoCartaJogar;$var[1]$var[2]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$removeSplitTextElement[$var[id]]
+$var[edit;$joinSplitText[-]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$if[$var[edit]==] 
+$removeSplitTextElement[$var[pos]] 
+$else
+$editSplitText[$var[pos];$var[edit]]
+$endif
+$setChannelVar[UnoCartas;$joinSplitText[/]]
+$removeButtons
+$description[Você selecionou a carta $var[$getChannelVar[UnoCartaJogar]]
+clique em jogar para enviar.]
+$else
+$ephemeral 
+$removeButtons
+$description[Você não pode jogar essa carta. 
+]
+$stop
+$endif
+$else
+$if[$or[$var[2]==b;$var[1]$var[2]==0b]==true]
+$setChannelVar[UnoCartaJogar;$var[1]$var[2]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$textSplit[$splitText[$var[pos]];-]
+$removeSplitTextElement[$var[id]]
+$var[edit;$joinSplitText[-]]
+$textSplit[$getChannelVar[UnoCartas];/]
+$if[$var[edit]==] 
+$removeSplitTextElement[$var[pos]] 
+$else
+$editSplitText[$var[pos];$var[edit]]
+$endif
+$setChannelVar[UnoCartas;$joinSplitText[/]]
+$removeButtons
+$description[Você selecionou a carta $var[$getChannelVar[UnoCartaJogar]]
+clique em jogar para enviar.]
+
+$else 
+$ephemeral 
+$removeButtons 
+$description[Você deve selecionar uma carta de compra. 
+ou, apertar no botão de comprar carta para comprar as cartas acumuladas.]
+$stop 
+$endif
+$endif
+
+$endif
